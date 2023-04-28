@@ -66,11 +66,12 @@ public class DataHandler {
         MtgCard card = cardsByName.get(name);
         if(card!=null){
             String url = card.image_uris().png();
-            String file = "images/" + folder + "/" + card.name() + ".png";
+            String cname = card.name().replaceAll("\\s*//\\s*","+");
+            String file = "images/" + folder + "/" + cname + ".png";
             FileUtils.copyURLToFile(new URL(url), new File(file));
         }
         else{
-            System.out.println("Card not found: "+name);
+            System.out.println("[!] Card not found: "+name);
         }
     }
 }
