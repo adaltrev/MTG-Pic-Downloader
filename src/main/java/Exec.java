@@ -28,7 +28,7 @@ public final class Exec {
         BufferedReader br = new BufferedReader(fr);
 
         //Initialize card dataset and fetch all card data from Scryfall once
-        DataHandler dh = new DataHandler();
+        DataHandler dh = new DataHandler(folder);
         System.out.println("Fetching card data...");
         dh.UpdateData();
         System.out.println("Done!");
@@ -39,10 +39,9 @@ public final class Exec {
         while((line = br.readLine()) != null){
             line=line.replaceAll("\\d+\s*","");
             try {
-                dh.downloadImage(folder, line);
+                dh.handleCard(line);
             } catch (Exception e){
-                System.out.println("[!] Image download failed, may be caused by wrong input formatting. Line:");
-                System.out.println(line);
+                System.out.println("[!] Image download failed for: "+line);
             }
         }
         System.out.println("Done!");

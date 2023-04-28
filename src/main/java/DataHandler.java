@@ -16,6 +16,11 @@ import java.util.TreeMap;
 
 
 public class DataHandler {
+    public DataHandler(String folder) {
+        this.folder = folder;
+    }
+
+    String folder;
     private final TreeMap<String, MtgCard> cardsByName = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public void UpdateData() {
@@ -61,17 +66,30 @@ public class DataHandler {
         return resp;
     }
 
-    //Downloads PNG image of a card with given name and saves it in a sub-folder given name
-    public void downloadImage(String folder, String name) throws IOException {
+    //Finds card corresponding to given name in local dataset
+    public void handleCard(String name) throws IOException {
         MtgCard card = cardsByName.get(name);
-        if(card!=null){
-            String url = card.image_uris().png();
-            String cname = card.name().replaceAll("\\s*//\\s*","+");
-            String file = "images/" + folder + "/" + cname + ".png";
-            FileUtils.copyURLToFile(new URL(url), new File(file));
+        if(card==null){
+            System.out.println("[!] Card not found: "+name);
+            return;
+        }
+
+        //If a card has multiple faces, handle them as separate cards
+        if(card.card_faces()!=null && card.image_uris()==null){
+            for(MtgCard face: card.card_faces()){
+                downloadImage(face);
+            }
         }
         else{
-            System.out.println("[!] Card not found: "+name);
+            downloadImage(card);
         }
+    }
+
+    //Downloads PNG image of a given card/face, from Scryfall
+    public void downloadImage(MtgCard card) throws IOException {
+        String url = card.image_uris().png();
+        String cname = card.name().replaceAll("\\s*//\\s*","+");
+        String file = "images/" + folder + "/" + cname + ".png";
+        FileUtils.copyURLToFile(new URL(url), new File(file));
     }
 }
