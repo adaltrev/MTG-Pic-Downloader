@@ -1,0 +1,9 @@
+<archetype>
+  <id>MtgPicDL</id>
+  <sources>
+    <source>src/Exec/java/App.java</source>
+  </sources>
+  <testSources>
+    <source>src/test/java/AppTest.java</source>
+  </testSources>
+</archetype>
