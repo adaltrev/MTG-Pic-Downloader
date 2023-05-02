@@ -22,6 +22,7 @@ public class DataHandler {
 
     String folder;
     private final TreeMap<String, MtgCard> cardsByName = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private final TreeMap<String, MtgCard> cardsByNameShort = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
     public void UpdateData() {
         try {
@@ -51,6 +52,12 @@ public class DataHandler {
             //Put all cards in a map with case-insensitive keys, for later search by Name
             for(MtgCard card:cards){
                 cardsByName.put(card.name(),card);
+
+                //Double-faced cards are saved in a separate map with the name of the front face, for easier input
+                if(card.name().contains("//")){
+                    String shortName = card.name().replaceAll("\s*//.*","");
+                    cardsByNameShort.put(shortName,card);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -70,8 +77,11 @@ public class DataHandler {
     public void handleCard(String name) throws IOException {
         MtgCard card = cardsByName.get(name);
         if(card==null){
-            System.out.println("[!] Card not found: "+name);
-            return;
+            card = cardsByNameShort.get(name);
+            if(card==null) {
+                System.out.println("[!] Card not found: " + name);
+                return;
+            }
         }
 
         //If a card has multiple faces, handle them as separate cards

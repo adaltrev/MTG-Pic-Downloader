@@ -1,2 +1,2 @@
-public record MtgCardImages(String small, String normal, String large, String png, String art_crop) {
+public record MtgCardImages(String png/*, String art_crop, String small, String normal, String large*/) {
 }
