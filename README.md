@@ -5,7 +5,7 @@ Given a text file with a list of card names, MTG Pic Downloader fetches from Scr
 ## Usage and Input Formatting
 Run the .jar file in the same folder of the input file. By default, the program will read from "source.txt" and save all images in "images/deck".
 The input file needs to have all card names written on separate lines, case insensitive, with or without a number before the name.
-For split or double-faced cards, the full name is required (Fire // Ice). Both faces of a double-faced card are downloaded as separate files.
+For split or double-faced cards, use either the full name (Fire // Ice) or just the first part (Fire). Both faces of a double-faced card are downloaded as separate files.
 
 ## Run Options
   * Run with default settings
